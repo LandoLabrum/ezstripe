@@ -1,4 +1,4 @@
-from ezstripe import ez_stripe
+# from ezstripe import ez_stripe
 
 # print(ez_stripe().product.list(limit=1))
 
@@ -30,15 +30,18 @@ from ezstripe import ez_stripe
 # }))
 
 ## MODIFY PRODUCT/PRICE 
-ez_stripe().product.modify({
-    "active": True,
-    "id":"prod_JqojgnVP7jDFop",
-    "name": "test nov13 1am",
-    "description": "new name DESCRIPTION",
-    "unit_amount": [140000,2000]
-    })
+# modified=ez_stripe().product.modify({
+#     "active": True,
+#     "id":"prod_JqojgnVP7jDFop",
+#     "name": "test nov13 1am",
+#     "description": "new name DESCRIPTION",
+#     "unit_amount": [100,14000]
+#     })
+# print(f"MODIFIED: {modified}")
 
 ## RETRIEVE PRODUCT/PRICE
 # print(ez_stripe().product.retrieve(
-#     "prod_JqojgnVP7jDFop"
+#     "prod_JqojgnVP7jDFop",
+#     active=False
 #     ))
+
