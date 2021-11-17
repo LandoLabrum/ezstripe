@@ -3,9 +3,11 @@ import stripe
 from dotenv import load_dotenv
 from .product import Product
 from .price import Price
-from .customer import Customer 
+from .customer import Customer
 from .method import Method
 from .session import Session
+from .invoice import Invoice
+from .subscription import Subscription
 
 class ez_stripe(object):
     def __init__(self):
@@ -33,3 +35,11 @@ class ez_stripe(object):
     @property
     def session(self):
         return Session(self)
+
+    @property
+    def invoice(self):
+        return Invoice(self)
+
+    @property
+    def subscription(self):
+        return Subscription(self)

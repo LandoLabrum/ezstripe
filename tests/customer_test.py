@@ -29,4 +29,4 @@ ez = ez_stripe()
 # delete = ez.customer.delete("cus_KbW3LQR3X73HCr")
 
 # list = ez.customer.list(email="test@deepturn.com")
-print(create)
+# print(create)

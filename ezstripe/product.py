@@ -1,14 +1,4 @@
-def data_cleaner(d):
-    recurring = None
-    metadata = None
-    active = False
-    if "active" in d:
-        active = d['active']
-    if "recurring" in d:
-        recurring = d['recurring']
-    if "metadata" in d:
-        metadata = d['metadata']
-    return recurring, metadata, active
+from .tools import product_cleaner
 
 class Product(object):
     def __init__(self, ez):
@@ -30,23 +20,23 @@ class Product(object):
             context = self.ez.stripe.Product.list()
         return context
 
-    def create(self, d):
-        recurring, metadata, active = data_cleaner(d)
-        if isinstance(d['unit_amount'], int):
+    def create(self, data):
+        recurring, metadata, active = product_cleaner(data)
+        if isinstance(data['unit_amount'], int):
             context = self.ez.stripe.Price.create(
                 active=active,
-                unit_amount=d['unit_amount'],
+                unit_amount=data['unit_amount'],
                 currency="usd",
                 recurring=recurring,
                 product_data={
-                    "name": d['name'],
+                    "name": data['name'],
                     "metadata": metadata
                 },
             )
-        elif isinstance(d['unit_amount'], list):
+        elif isinstance(data['unit_amount'], list):
             context = []
             product = None
-            for u_a in d['unit_amount']:
+            for u_a in data['unit_amount']:
                 if product == None:
                     nu_product = self.ez.stripe.Price.create(
                         active=active,
@@ -54,7 +44,7 @@ class Product(object):
                         currency="usd",
                         recurring=recurring,
                         product_data={
-                            "name": d['name'],
+                            "name": data['name'],
                             "metadata": metadata
                         },
                     )
@@ -73,7 +63,7 @@ class Product(object):
 
     def modify(self, d):
         context={}
-        recurring, metadata, active = data_cleaner(d)
+        recurring, metadata, active = product_cleaner(d)
         context = self.ez.stripe.Product.modify(
             d['id'],
             active=active,

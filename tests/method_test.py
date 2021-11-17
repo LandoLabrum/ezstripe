@@ -1,6 +1,6 @@
 from ezstripe import ez_stripe
 create = ez_stripe().method.create(
-    customer_id="cus_KZaRYovQ1JN6vL",
+    customer_id="cus_KbYjCGCrgaDIRp",
     card={"number": "4242424242424242",
      "exp_month": 12,
      "exp_year": 2022,

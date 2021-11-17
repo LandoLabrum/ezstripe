@@ -5,7 +5,7 @@ class Session(object):
     def __init__(self, ez):
         self.ez = ez
 
-    def create(self, customer_id=None, mode="setup", line_items=None):
+    def create(self, customer_id=None, mode="setup", line_items=None, success_url="https://example.com/success", cancel_url="https://example.com/cancel"):
         """
         mode: ("payment", "setup", "subscription")
            line_items=[
@@ -15,10 +15,9 @@ class Session(object):
             },
         ]
         """
-        
         context = self.ez.stripe.checkout.Session.create(
-            success_url="https://example.com/success",
-            cancel_url="https://example.com/cancel",
+            success_url=success_url,
+            cancel_url=cancel_url,
             payment_method_types=["card"],
             customer=customer_id,
             line_items=line_items,
@@ -26,7 +25,17 @@ class Session(object):
         )
         return context
 
-    # def retrieve(self, method_id=None):
+    def expire(self, session_id=None):
+        context = self.ez.stripe.checkout.Session.expire(session_id)
+        return context
+
+    def retrieve(self, session_id=None):
+        context = self.ez.stripe.checkout.Session.retrieve(session_id)
+        return context
+
+        
+        
+            # def retrieve(self, method_id=None):
     #     context={}
     #     try:
     #         context = self.ez.stripe.Session.retrieve(method_id)

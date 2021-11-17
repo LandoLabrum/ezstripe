@@ -6,21 +6,33 @@ class Method(object):
         self.ez = ez
 
     def create(self, customer_id=None, card=None):
-        billing_details={"address":self.ez.customer.retrieve(customer_id)["address"]}
-        
+        customer=self.ez.customer.retrieve(customer_id)
+        billing_details={
+            "address":customer["address"],
+            "email":customer["email"],
+            "name":customer["name"],
+            "phone":customer["phone"],
+            }
+        source = self.ez.stripe.Token.create(
+            card=card
+        )['id']
+        print(f"TOKEN: {source}")
         method = self.ez.stripe.PaymentMethod.create(
             type="card",
-            card=card,
+            card={
+                "token": source,
+            },
             billing_details=billing_details
         )['id']
         context=self.ez.stripe.PaymentMethod.attach(
             method,
             customer=customer_id
         )
-        # context = self.ez.stripe.SetupIntent.create(
-        #     customer=customer_id,
-        #     payment_method=method
-        # )
+        self.ez.customer.modify(
+            customer_id=customer_id,
+            data={"invoice_settings":{"default_payment_method":method}}
+            )
+
         return context
 
     def retrieve(self, method_id=None):
